@@ -6,8 +6,6 @@
 <br>
 
 <!-- ## Sample Code Reference   -->
-
-
 <br>
 
 ## 목차
@@ -17,3 +15,4 @@
 #### 1장 안정성  
   
 [아이템 1: 가변성을 제한하라](./summary/item_01.md)  
+[아이템 2: 변수의 스코프를 최소화하라](./summary/item_02.md)  
