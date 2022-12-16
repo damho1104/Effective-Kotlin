@@ -72,7 +72,38 @@
     }
     ```
     - kotlin 코드의 2개 메소드 모두 Null Pointer Exception 발생
-        - `statedtType` 메소드에서는 `value` 에 assign 하는 line 에서 발생
+        - `statedtType` 메소드: `value` 에 assign 하는 line 에서 발생
             - 예외 원인 파악이 쉬움(문제 지점과 동일 위치)
-        - `platformType` 메소드에서는 `value` 를 사용하는  line 에서 발생
+        - `platformType` 메소드: `value` 를 사용하는  line 에서 발생
             - 예외 원인 파악 어려움(문제 지점과 거리가 있을 수 있음)
+
+- *예제: 플랫폼 타입이 메소드에 적용된 경우*
+    ```kotlin
+    // interface 개발자
+    interface UserRepo {
+        fun getUserName() = JavaClass().value
+    }
+
+    // API 개발자
+    class RepoImpl: UserRepo {
+        override fun getUserName(): String? {
+            return null
+        }
+    }
+
+    // API 사용자
+    fun main() {
+        val repo: UserRepo = RepoImpl()
+        val text: String = repo.getUserName()
+        print("User name length is ${text.length}")
+    }
+    ```
+    - interface 개발자는 플랫폼 타입 처리하여 누구나 nullable 여부 지정할 수 있도록 함
+    - API 개발자는 nullable 타입으로 지정
+    - API 사용자는 non-null 로 인식하여 문제 발생
+    - 결론: 플랫폼 타입이 전파되지 않도록 해야 함
+
+## 3. 정리
+- 플랫폼 타입: 다른 프로그래밍 언어에서 전달된 nullable 여부를 알 수 없는 타입
+- 플랫폼 타입은 사용하기 보단 다른 프로그래밍 언어에서 명확하게 할 것을 권장
+    - 자바의 경우 nullable 여부 지정하는 어노테이션을 활용할 것
